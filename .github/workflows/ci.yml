@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - name: Lint
+        run: uvx ruff check .
+      - name: Rerun the full simulation (1,000 replications × 3 scenarios)
+        run: uv run python sim.py --reps 1000
+      - name: Every committed figure must reproduce
+        run: uv run python scripts/check_reproduces.py
+      - name: The report still renders
+        run: uv run python report.py

@@ -1,0 +1,16 @@
+[project]
+name = "prevalence-shift"
+version = "0.1.0"
+description = "Seeded Monte Carlo: classify-and-count vs ACC, SLD, gold-only and PPI when a category's prevalence drifts or the classifier changes."
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=2.0",
+  "scipy>=1.13",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff.lint]
+# Pinned so CI and local runs agree across Ruff versions: pyflakes + syntax/IO errors.
+select = ["E4", "E7", "E9", "F"]

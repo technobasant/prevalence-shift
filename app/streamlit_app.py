@@ -22,7 +22,19 @@ import altair as alt  # noqa: E402
 import pandas as pd  # noqa: E402
 import streamlit as st  # noqa: E402
 
+# Community Cloud pulls each push into the running process and re-reads this script on
+# every run, but the imported sim module and st.cache_data results outlive the push: the
+# app would keep serving the previous simulation while saying it runs this repository's
+# code. Fingerprint what it runs, and start afresh when that changes.
+_stamp = max(p.stat().st_mtime_ns for p in (ROOT / "sim.py", ROOT / "out" / "results.json"))
+if getattr(sys.modules.get("sim"), "app_stamp", None) != _stamp:
+    sys.modules.pop("sim", None)
+    st.cache_data.clear()
+
+import sim  # noqa: E402
 from sim import Classifier, run_break, run_drift  # noqa: E402
+
+sim.app_stamp = _stamp
 
 REPO = "https://github.com/technobasant/prevalence-shift"
 POST = "https://basantbhattarai.com.np/writing/count-prevalence-not-classifications/"

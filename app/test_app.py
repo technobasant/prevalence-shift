@@ -6,6 +6,8 @@ Run with the app's own dependencies, as Streamlit Community Cloud installs them:
 """
 from __future__ import annotations
 
+import os
+import sys
 from pathlib import Path
 
 from streamlit.testing.v1 import AppTest
@@ -59,3 +61,20 @@ def test_the_upgrade_view_reruns_scenario_c_exactly() -> None:
     at = run_app("upgrade")
     assert matched(at)
     assert "## Counting reported a +24% change that never happened" in text(at)
+
+
+def test_a_pushed_change_to_sim_py_is_picked_up_without_a_reboot() -> None:
+    # Community Cloud pulls a push into the running process; the app must re-import
+    # sim.py and drop cached results rather than keep what it computed before the push.
+    at = run_app()
+    before = sys.modules["sim"]
+    src = Path(__file__).resolve().parents[1] / "sim.py"
+    stat = src.stat()
+    try:
+        os.utime(src, ns=(stat.st_atime_ns, stat.st_mtime_ns + 10**9 * 3600))
+        at.run()
+        assert not at.exception
+        assert sys.modules["sim"] is not before
+        assert matched(at)
+    finally:
+        os.utime(src, ns=(stat.st_atime_ns, stat.st_mtime_ns))

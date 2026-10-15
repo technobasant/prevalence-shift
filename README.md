@@ -1,12 +1,15 @@
 # prevalence-shift
 
 [![ci](https://github.com/technobasant/prevalence-shift/actions/workflows/ci.yml/badge.svg)](https://github.com/technobasant/prevalence-shift/actions/workflows/ci.yml)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://prevalence-shift.streamlit.app)
 
 When a category's share of incoming reports changes over time, which estimator reports the change honestly? This is a seeded Monte Carlo that answers that for one idealised classifier, and the answer is not the one a dashboard built on predicted labels gives you.
 
 A classifier that is 95% accurate at its training prior **counted a rise from 10% to 25% as 8% to 17%**. Its trend slope came out at 0.628 of the true one — exactly TPR − FPR — and its naive 95% intervals covered the truth in **0.0%** of 12,000 period estimates. Counting labels does not measure prevalence; it measures prevalence passed through the classifier's error rates. Then a model upgrade on a flat 15% series showed up as a **+24% "trend" that never happened**.
 
 Write-up: [The classifier was 95% accurate. The trend it counted was a third too flat.](https://basantbhattarai.com.np/writing/count-prevalence-not-classifications/)
+
+**Try it in the browser: [prevalence-shift.streamlit.app](https://prevalence-shift.streamlit.app).** It runs `sim.py` live: move the classifier and the trend, try a weaker model or a rarer category, or [open the model upgrade](https://prevalence-shift.streamlit.app/?view=upgrade). At the published settings it reproduces every figure below and says so. After a quiet spell it takes about half a minute to wake.
 
 ## What it compares
 
@@ -66,6 +69,8 @@ uv run python scripts/check_reproduces.py   # every figure vs the committed resu
 ```
 
 `uv run --with numpy,scipy python sim.py --reps 1000`, the form MEASUREMENTS.md prints, also works. On the machine that produced the figures, a rerun under Python 3.12 instead of 3.13 reproduced `results.json` bit for bit. CI reruns the full 1,000 replications on every push and fails if any committed figure moves.
+
+The browser app in [`app/`](app) runs locally with `uv run --with-requirements app/requirements.txt streamlit run app/streamlit_app.py`; CI checks that it still reproduces scenarios A, B and C.
 
 ## Method notes
 

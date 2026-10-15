@@ -26,7 +26,7 @@ import streamlit as st  # noqa: E402
 # every run, but the imported sim module and st.cache_data results outlive the push: the
 # app would keep serving the previous simulation while saying it runs this repository's
 # code. Fingerprint what it runs, and start afresh when that changes.
-_stamp = max(p.stat().st_mtime_ns for p in (ROOT / "sim.py", ROOT / "out" / "results.json"))
+_stamp = tuple(p.stat().st_mtime_ns for p in (ROOT / "sim.py", ROOT / "out" / "results.json"))
 if getattr(sys.modules.get("sim"), "app_stamp", None) != _stamp:
     sys.modules.pop("sim", None)
     st.cache_data.clear()

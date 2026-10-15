@@ -1,0 +1,7 @@
+# Streamlit Community Cloud reads the dependency file next to the entrypoint before
+# the repository root, so the app has its own list and uv.lock stays exactly as CI
+# uses it. The app imports sim.py from the root, so this is sim.py's dependencies
+# plus Streamlit (which brings pandas and Altair).
+streamlit>=1.65,<2
+numpy>=2.0
+scipy>=1.13

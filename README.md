@@ -3,7 +3,7 @@
 [![ci](https://github.com/technobasant/prevalence-shift/actions/workflows/ci.yml/badge.svg)](https://github.com/technobasant/prevalence-shift/actions/workflows/ci.yml)
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://prevalence-shift.streamlit.app)
 
-When a category's share of incoming reports changes over time, which estimator reports the change honestly? This is a seeded Monte Carlo that answers that for one idealised classifier, and the answer is not the one a dashboard built on predicted labels gives you.
+When a category's share of incoming reports changes over time, which estimator reports the change honestly? This is a Monte Carlo simulation with a fixed seed that answers that for one idealised classifier, and the answer is not the one a dashboard built on predicted labels gives you.
 
 A classifier that is 95% accurate at its training prior **counted a rise from 10% to 25% as 8% to 17%**. Its trend slope came out at 0.628 of the true one — exactly TPR − FPR — and its naive 95% intervals covered the truth in **0.0%** of 12,000 period estimates. Counting labels does not measure prevalence; it measures prevalence passed through the classifier's error rates. Then a model upgrade on a flat 15% series showed up as a **+24% "trend" that never happened**.
 
@@ -81,7 +81,7 @@ The browser app in [`app/`](app) runs locally with `uv run --with-requirements a
 
 ## Limits
 
-- **Synthetic data, idealised classifier.** Gaussian scores with equal variance and a single threshold. What transfers is the direction and mechanism of each bias — CC's slope is TPR − FPR, SLD inherits calibration error, a model change is a measurement break — not the specific magnitudes.
+- **Generated data, idealised classifier.** Gaussian scores with equal variance and a single threshold. What transfers is the direction and mechanism of each bias — CC's slope is TPR − FPR, SLD inherits calibration error, a model change is a measurement break — not the specific magnitudes.
 - **Pure label shift.** The share changes; what a report in each category looks like does not. ACC and SLD rely on that. PPI needs no assumption about the classifier, only a uniform random gold sample drawn from the same period — but evolving categories are not simulated here.
 - **Binary, one category at a time.** Real taxonomies are multi-class, with mixed sources, campaign duplicates and categories too rare for a per-period estimate.
 - **One machine** for the timings (Apple M5). The figures themselves are deterministic for the seed.

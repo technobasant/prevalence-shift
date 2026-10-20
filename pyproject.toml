@@ -1,7 +1,7 @@
 [project]
 name = "prevalence-shift"
 version = "0.1.0"
-description = "Seeded Monte Carlo: classify-and-count vs ACC, SLD, gold-only and PPI when a category's prevalence drifts or the classifier changes."
+description = "Monte Carlo simulation with a fixed seed: classify-and-count vs ACC, SLD, gold-only and PPI when a category's prevalence drifts or the classifier changes."
 requires-python = ">=3.12"
 dependencies = [
   "numpy>=2.0",

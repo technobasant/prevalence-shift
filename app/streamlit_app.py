@@ -152,7 +152,7 @@ st.markdown(
 )
 st.caption(
     f"[prevalence-shift on GitHub]({REPO}) · [The write-up: the classifier was 95% "
-    f"accurate]({POST}) · runs sim.py live, seeded"
+    f"accurate]({POST}) · runs sim.py live, with a fixed seed"
 )
 
 view = st.query_params.get("view")
@@ -375,7 +375,7 @@ with tab_upgrade:
 
 st.divider()
 st.caption(
-    "Synthetic, idealised classifier: Gaussian scores, one threshold, pure label shift. What "
+    "Generated, idealised classifier: Gaussian scores, one threshold, pure label shift. What "
     "transfers is the direction and mechanism of each bias, not the magnitudes. "
     f"[Source of this app]({REPO}/tree/main/app) · [Measurements]({REPO}/blob/main/MEASUREMENTS.md)"
 )
